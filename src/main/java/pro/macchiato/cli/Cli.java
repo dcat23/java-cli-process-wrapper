@@ -9,11 +9,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
-@Getter
+@Slf4j
 public class Cli {
     protected String executablePath;
-
-    @Setter
     protected String directory;
     protected Map<String, String> options = new HashMap<>();
 
@@ -22,8 +20,7 @@ public class Cli {
         this.executablePath = executablePath;
     }
 
-
-    public String buildCommand() {
+    protected String buildCommand() {
         StringBuilder builder = new StringBuilder();
 
         Iterator<Map.Entry<String, String>> it = options.entrySet().iterator();
@@ -36,7 +33,7 @@ public class Cli {
             if (value == null) value = "";
 
             String optionFormatted = String.format("%s %s", name, value).trim();
-            builder.append(optionFormatted + " ");
+            builder.append(optionFormatted).append(" ");
 
             it.remove();
         }
@@ -59,6 +56,7 @@ public class Cli {
     }
     public void execute(ProgressCallback callback) throws CliException {
         String command = buildCommand();
+        log.info(command);
         Process process;
         int exitCode;
         StringBuilder outBuffer = new StringBuilder(); // stdout
@@ -72,9 +70,10 @@ public class Cli {
         if (directory != null) processBuilder.directory(new File(directory));
 
         try {
+            log.info("Starting process");
             process = processBuilder.start();
         } catch (IOException e) {
-            throw new CliException(e.getMessage());
+            throw new CliException(e);
         }
 
         InputStream outStream = process.getInputStream();
@@ -92,7 +91,6 @@ public class Cli {
             stdErrProcessor.join();
             exitCode = process.waitFor();
         } catch (InterruptedException e) {
-
             // process exited for some reason
             throw new CliException(e);
         }
@@ -101,10 +99,9 @@ public class Cli {
         String err = errBuffer.toString();
 
         if (exitCode > 0) {
-            throw new CliException(err);
+            throw new CliException(err, exitCode);
         }
 
-        System.out.println(out);
+        log.info("out {}", out);
     }
-
 }

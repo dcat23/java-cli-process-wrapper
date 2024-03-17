@@ -1,8 +1,11 @@
 package pro.macchiato.cli;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.io.InputStream;
 
+@Slf4j
 public class ProcessExtractor extends Thread {
 
     private final InputStream stream;
@@ -18,6 +21,7 @@ public class ProcessExtractor extends Thread {
 
     @Override
     public void run() {
+        log.info("Stream gobbler activated");
         try {
             StringBuilder currentLine = new StringBuilder();
             int nextChar;
@@ -31,7 +35,7 @@ public class ProcessExtractor extends Thread {
                 currentLine.append((char) nextChar);
             }
         } catch (IOException ignored) {
-            ignored.printStackTrace();
+            log.error(ignored.getMessage());
         }
     }
 }
