@@ -15,7 +15,7 @@ public class Cli {
     protected Map<String, String> options = new HashMap<>();
 
     public Cli(String executablePath) {
-        this.directory = System.getProperty("java.io.tmpdir");
+        this.directory = System.getProperty("user.dir");
         this.executablePath = Objects.requireNonNull(executablePath);
     }
 
