@@ -24,18 +24,14 @@ public class ProcessExtractor extends Thread {
         try {
             StringBuilder currentLine = new StringBuilder();
             int nextChar;
-            while ((nextChar = stream.read()) != -1) {
+            while ((nextChar = stream.read()) != -1 && !callback.isReady()) {
                 buffer.append((char) nextChar);
-                if (nextChar == '\r' && callback != null) {
+                if (nextChar == '\r') {
                     callback.processLine(currentLine.toString());
                     currentLine.setLength(0);
                     continue;
                 }
                 currentLine.append((char) nextChar);
-                if (callback != null && callback.isReady()) {
-                    log.info("Callback is ready");
-                    break;
-                }
             }
         } catch (IOException ignored) {
             log.error(ignored.getMessage());

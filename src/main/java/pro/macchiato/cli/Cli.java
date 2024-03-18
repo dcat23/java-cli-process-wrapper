@@ -69,7 +69,6 @@ public class Cli {
         if (directory != null) processBuilder.directory(new File(directory));
 
         try {
-            log.info("Starting process");
             process = processBuilder.start();
         } catch (IOException e) {
             throw new CliException(e);
@@ -86,9 +85,18 @@ public class Cli {
         );
 
         try {
+            log.info("processing");
             stdOutProcessor.join();
             stdErrProcessor.join();
-            exitCode = process.waitFor();
+            log.info("processed");
+            if (callback.isReady()) {
+                log.info("destroying process");
+                process.destroy();
+                exitCode = -1;
+            } else {
+                log.info("waiting for process");
+                exitCode = process.waitFor();
+            }
         } catch (InterruptedException e) {
             // process exited for some reason
             throw new CliException(e);
@@ -101,6 +109,6 @@ public class Cli {
             throw new CliException(err, exitCode);
         }
 
-        return new CliResult(out, err, command, callback.getElapsed());
+        return new CliResult(out, err, command, callback.getElapsed(), exitCode);
     }
 }
