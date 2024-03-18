@@ -1,6 +1,5 @@
 package pro.macchiato.cli;
 
-import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import pro.macchiato.cli.exceptions.CliException;
 
@@ -16,8 +15,8 @@ public class Cli {
     protected Map<String, String> options = new HashMap<>();
 
     public Cli(String executablePath) {
-        this.directory = System.getProperty("user.dir");
-        this.executablePath = executablePath;
+        this.directory = System.getProperty("java.io.tmpdir");
+        this.executablePath = Objects.requireNonNull(executablePath);
     }
 
     protected String buildCommand() {
@@ -51,10 +50,10 @@ public class Cli {
         addOption(key, null);
     }
 
-    public void execute() throws CliException {
-        execute(null);
+    public CliResult execute() throws CliException {
+        return execute(null);
     }
-    public void execute(ProgressCallback callback) throws CliException {
+    public CliResult execute(ProgressCallback callback) throws CliException {
         String command = buildCommand();
         log.info(command);
         Process process;
@@ -102,6 +101,6 @@ public class Cli {
             throw new CliException(err, exitCode);
         }
 
-        log.info("out {}", out);
+        return new CliResult(out, err, command, callback.getElapsed());
     }
 }

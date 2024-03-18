@@ -6,7 +6,14 @@ public interface ProgressCallback {
 
     /**
      * Time elapsed in seconds
+     *
      * @return seconds
      */
-    long getElapsed();
+    String getElapsed();
+
+    /**
+     * Flag to stop processing
+     * @return
+     */
+    boolean isReady();
 }

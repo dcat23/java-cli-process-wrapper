@@ -15,11 +15,16 @@ public class TransCli extends Cli{
 
 
     @Override
-    public void execute() throws CliException {
+    public CliResult execute() throws CliException {
         super.execute(new Callback());
+        return null;
     }
 
     public static class Callback implements ProgressCallback {
+        @Override
+        public boolean isReady() {
+            return false;
+        }
 
         private static final String GROUP_PERCENT = "percent";
         private static final String GROUP_ELAPSED = "elapsed";
@@ -46,8 +51,8 @@ public class TransCli extends Cli{
         }
 
         @Override
-        public long getElapsed() {
-            return 0;
+        public String getElapsed() {
+            return "";
         }
     }
 }

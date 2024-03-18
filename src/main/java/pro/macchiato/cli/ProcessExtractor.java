@@ -21,7 +21,6 @@ public class ProcessExtractor extends Thread {
 
     @Override
     public void run() {
-        log.info("Stream gobbler activated");
         try {
             StringBuilder currentLine = new StringBuilder();
             int nextChar;
@@ -33,6 +32,10 @@ public class ProcessExtractor extends Thread {
                     continue;
                 }
                 currentLine.append((char) nextChar);
+                if (callback != null && callback.isReady()) {
+                    log.info("Callback is ready");
+                    break;
+                }
             }
         } catch (IOException ignored) {
             log.error(ignored.getMessage());
