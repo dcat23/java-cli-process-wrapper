@@ -1,4 +1,4 @@
-package pro.macchiato.cli.exceptions;
+package com.dcat23.cli.exceptions;
 
 import java.io.IOException;
 

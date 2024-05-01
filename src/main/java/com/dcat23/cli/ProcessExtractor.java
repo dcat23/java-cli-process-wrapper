@@ -1,4 +1,4 @@
-package pro.macchiato.cli;
+package com.dcat23.cli;
 
 import lombok.extern.slf4j.Slf4j;
 

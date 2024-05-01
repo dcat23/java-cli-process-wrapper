@@ -1,7 +1,7 @@
-package pro.macchiato.cli;
+package com.dcat23.cli;
 
+import com.dcat23.cli.exceptions.CliException;
 import lombok.extern.slf4j.Slf4j;
-import pro.macchiato.cli.exceptions.CliException;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,7 +54,7 @@ public class Cli {
         addOption(key, null);
     }
     public CliResult execute() throws CliException {
-        return execute(null);
+        return execute(new ProgressCallBackImpl());
     }
     public CliResult execute(ProgressCallback callback) throws CliException {
         String command = buildCommand();
@@ -88,16 +88,16 @@ public class Cli {
         );
 
         try {
-            log.debug("processing");
+            log.debug("Processing");
             stdOutProcessor.join();
             stdErrProcessor.join();
-            log.debug("processed");
+            log.debug("Processed");
             if (callback.isReady()) {
-                log.info("destroying process");
+                log.info("Destroying process {}", process.pid());
                 process.destroy();
                 exitCode = -1;
             } else {
-                log.info("waiting for process");
+                log.info("Waiting for process");
                 exitCode = process.waitFor();
             }
         } catch (InterruptedException e) {

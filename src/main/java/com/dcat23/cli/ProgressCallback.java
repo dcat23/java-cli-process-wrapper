@@ -1,4 +1,4 @@
-package pro.macchiato.cli;
+package com.dcat23.cli;
 
 public interface ProgressCallback {
 
