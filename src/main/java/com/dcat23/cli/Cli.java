@@ -54,7 +54,7 @@ public class Cli {
         addOption(key, null);
     }
     public CliResult execute() throws CliException {
-        return execute(new ProgressCallBackImpl());
+        return execute(new ProgressCallbackImpl());
     }
     public CliResult execute(ProgressCallback callback) throws CliException {
         String command = buildCommand();

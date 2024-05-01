@@ -6,7 +6,7 @@ import java.time.Duration;
 import java.time.Instant;
 
 @Slf4j
-public class ProgressCallBackImpl implements ProgressCallback {
+public class ProgressCallbackImpl implements ProgressCallback {
     private final Instant start = Instant.now();
 
     /**

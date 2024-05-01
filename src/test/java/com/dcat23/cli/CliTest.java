@@ -13,4 +13,12 @@ class CliTest {
         CliResult result = ls.execute();
         assertTrue(result.out().contains("pom.xml"));
     }
+
+    @Test
+    void CLi_execute_shouldTakeOptions() throws CliException {
+        Cli cat = new Cli("cat");
+        cat.addOption("pom.xml");
+        CliResult result = cat.execute();
+        assertTrue(result.out().contains("dcat23"));
+    }
 }
