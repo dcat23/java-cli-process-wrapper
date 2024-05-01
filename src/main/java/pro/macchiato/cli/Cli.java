@@ -15,7 +15,11 @@ public class Cli {
     protected Map<String, String> options = new HashMap<>();
 
     public Cli(String executablePath) {
-        this.directory = System.getProperty("user.dir");
+        this(executablePath, System.getProperty("user.dir"));
+    }
+
+    public Cli(String executablePath, String directory) {
+        this.directory = directory;
         this.executablePath = Objects.requireNonNull(executablePath);
     }
 
@@ -49,7 +53,6 @@ public class Cli {
     public void addOption(String key) {
         addOption(key, null);
     }
-
     public CliResult execute() throws CliException {
         return execute(null);
     }
@@ -85,10 +88,10 @@ public class Cli {
         );
 
         try {
-            log.info("processing");
+            log.debug("processing");
             stdOutProcessor.join();
             stdErrProcessor.join();
-            log.info("processed");
+            log.debug("processed");
             if (callback.isReady()) {
                 log.info("destroying process");
                 process.destroy();
