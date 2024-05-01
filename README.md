@@ -5,8 +5,17 @@ Application to execute command line processes using java.
 
 ## Installation
 
+Add repository
+```xml
+<repositories>
+    <repository>
+        <id>github</id>
+        <name>GitHub DCAT23 Maven Packages</name>
+        <url>https://maven.pkg.github.com/dcat23/java-cli-process-wrapper</url>
+    </repository>
+</repositories>
+```
 Install maven
-
 ```xml
 <dependency>
     <groupId>com.dcat23</groupId>
@@ -30,7 +39,7 @@ public static void main(String[] args) {
     System.out.println(result.command());
 }
 ```
-### [Progress Callback](src/main/java/com/dcat23/cli/ProgressCallBackImpl.java)
+### [Progress Callback](src/main/java/com/dcat23/cli/ProgressCallbackImpl.java)
 ```java
 public interface ProgressCallback {
     /**
